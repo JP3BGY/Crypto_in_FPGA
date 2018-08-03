@@ -3,7 +3,6 @@
 // Copyright (c) 2013, Intel Corporation
 // All rights reserved
 
-`include "aes.svh"
 
 module aes_key_expand
 #(
@@ -17,12 +16,12 @@ module aes_key_expand
 logic [31:0] temp [4*(Nr+1)];
 genvar i;
 generate
-    for (i = 0; i < Nk; ++i) begin
+for (i = 0; i < Nk; ++i) begin :key_ex
         always_comb
             temp[i] = key[32*i+:32];
     end
 
-    for (i = Nk; i < 4*(Nr+1); ++i) begin
+    for (i = Nk; i < 4*(Nr+1); ++i) begin :main_loop
         if (i % Nk == 0)
             always_comb
                 temp[i] = temp[i-Nk]
@@ -38,7 +37,7 @@ generate
 endgenerate
 
 generate
-    for (i = 0; i <= Nr; ++i) begin
+for (i = 0; i <= Nr; ++i) begin :little_endian
         always_comb
             k_sch[i] = {temp[4*i+3], temp[4*i+2], temp[4*i+1], temp[4*i+0]};
     end
