@@ -1,3 +1,6 @@
+`include "flops.svh"
+`include "aes.svh"
+
 module aes
 (
     input logic clk,
