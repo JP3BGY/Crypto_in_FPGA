@@ -33,9 +33,9 @@ always_comb valid = valids[Nr];
 
 `DFFEN(state[0], AddRoundKey(pt, k_sch[0]), load, clk)
 `DFF_ARN(valids[0], load, clk, rst_n, 1'b0)
-
+genvar i;
 generate
-    for (genvar i = 1; i < Nr; ++i) begin: round
+    for (i = 1; i < Nr; ++i) begin: round
         always_comb s_box[i] = SubBytes(state[i-1]);
         always_comb s_row[i] = ShiftRows(s_box[i]);
         always_comb m_col[i] = MixColumns(s_row[i]);
