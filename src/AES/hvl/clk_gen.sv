@@ -2,7 +2,8 @@
 //
 // Copyright (c) 2013, Intel Corporation
 // All rights reserved
-
+/* verilator lint_off STMTDLY */
+/* verilator lint_off INFINITELOOP */
 module clk_gen
 #(
     int period = 2500,

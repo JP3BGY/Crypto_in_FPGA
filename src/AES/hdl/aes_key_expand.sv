@@ -12,8 +12,9 @@ module aes_key_expand
     input logic [32*Nk-1:0] key,
     output logic [127:0] k_sch [0:Nr]
 );
-
-logic [31:0] temp [4*(Nr+1)];
+/* verilator lint_off UNOPTFLAT */
+logic [31:0] temp [4*(Nr+1)]/*verilator public*/;
+/* verilator lint_on UNOPTFLAT */
 genvar i;
 generate
 for (i = 0; i < Nk; ++i) begin :key_ex
@@ -23,10 +24,12 @@ for (i = 0; i < Nk; ++i) begin :key_ex
 
     for (i = Nk; i < 4*(Nr+1); ++i) begin :main_loop
         if (i % Nk == 0)
+            /* verilator lint_off ALWCOMBORDER */
             always_comb
                 temp[i] = temp[i-Nk]
                         ^ SubWord(RotWord(temp[i-1]))
                         ^ {24'h0, RCON[i/Nk]};
+            /* verilator lint_on ALWCOMBORDER */
         else if (Nk > 6 && (i % Nk == 4))
             always_comb
                 temp[i] = temp[i-Nk] ^ SubWord(temp[i-1]);

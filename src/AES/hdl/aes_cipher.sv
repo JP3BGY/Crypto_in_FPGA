@@ -3,6 +3,8 @@
 // Copyright (c) 2013, Intel Corporation
 // All rights reserved
 
+`include "flops.svh"
+`include "aes.svh"
 
 module aes_cipher
 #(
