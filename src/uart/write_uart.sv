@@ -1,4 +1,4 @@
-module read_uart
+module write_uart
 #(
     parameter freq = 347
 )
