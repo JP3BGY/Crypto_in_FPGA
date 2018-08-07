@@ -3,7 +3,6 @@
 // Copyright (c) 2013, Intel Corporation
 // All rights reserved
 
-
 module aes_encrypt
 #(
     parameter Nk=4,
@@ -18,10 +17,9 @@ module aes_encrypt
     input logic [127:0] pt,
 
     output logic [127:0] ct,
-    output logic valid
+    output logic valid,
+    output logic [127:0] k_sch [0:Nr]
 );
-
-logic [127:0] k_sch [0:Nr];
 
 aes_key_expand #(Nk) key_expand(.*);
 aes_cipher #(Nk) cipher(.*);

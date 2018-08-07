@@ -29,10 +29,10 @@ always @(negedge RxD)
 begin
     if(read_flag != 1)
         begin
-            first <= clk_cnt-1;
-            read_flag <= 1;
-            fin_flag <= 0;
-            num <= 0;
+            first = clk_cnt-1;
+            read_flag = 1;
+            fin_flag = 0;
+            num = 0;
         end
 end
 always @(negedge timing_flag)
@@ -40,15 +40,15 @@ begin
     if(read_flag == 1)
     begin
         if(num != 8)
-            data_reg[num] <= RxD;
+            data_reg[num[2:0]] = RxD;
         //else
 
-        num <= num + 1;
+        num = num + 1;
         if(num == 9)
         begin
-            read_flag <= 0;
-            fin_flag <= 1;
-            num <= 0;
+            read_flag = 0;
+            fin_flag = 1;
+            num = 0;
         end
     end
 end

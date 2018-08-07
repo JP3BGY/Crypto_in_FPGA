@@ -26,9 +26,9 @@ always @(posedge flag)
 begin
     if(write_flag != 1)
         begin
-            first <= clk_cnt-1;
-            write_flag <= 1;
-            num <= 0;
+            first = clk_cnt-1;
+            write_flag = 1;
+            num = 0;
         end
 end
 always @(negedge timing_flag)
@@ -36,15 +36,15 @@ begin
     if(write_flag == 1)
     begin
         if(num != 8)
-            TxD <= data[num];
+            TxD = data[num[2:0]];
         else
-            TxD <= data[0] ^ data[1] ^ data[2] ^ data[3] ^ data[4] ^ data[5] ^ data[6] ^ data[7];
+            TxD = data[0] ^ data[1] ^ data[2] ^ data[3] ^ data[4] ^ data[5] ^ data[6] ^ data[7];
 
-        num <= num + 1;
+        num = num + 1;
         if(num == 9)
         begin
-            write_flag <= 0;
-            num <= 0;
+            write_flag = 0;
+            num = 0;
         end
     end
 end
