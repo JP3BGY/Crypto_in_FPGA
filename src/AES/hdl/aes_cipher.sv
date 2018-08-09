@@ -24,7 +24,7 @@ module aes_cipher
 
 logic [127:0] state [0:1];
 
-logic valids [0:3];
+logic [0:3] valids;
 
 always_comb ct = state[0];
 always_comb valid = (valids==Nr+1);
