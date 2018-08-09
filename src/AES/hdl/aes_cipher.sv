@@ -132,7 +132,7 @@ MixColumns(logic [3:0] [31:0] state);
 endfunction
 
 always @(posedge clk or negedge rst_n) begin
-    if(!rst_n || !load)begin
+    if(!rst_n | !load)begin
         valids <= 0;
     end
     else if(load)begin
