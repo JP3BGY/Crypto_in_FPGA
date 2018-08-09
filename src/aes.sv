@@ -16,7 +16,6 @@ module aes
 
 reg [1:0] pos1;
 reg [3:0] pos2;
-logic [127:0] k_sch [0:10];
 wire [31:0] segment_led_buf;
 wire [7:0] in[15:0];
 wire [127:0] inp;
@@ -29,7 +28,7 @@ assign key = 128'hfefd00d583ef87e9b7e6ab3a655f68db;
 assign inp = {in[0],in[1],in[2],in[3],in[4],in[5],in[6],in[7],in[8],in[9],in[10],in[11],in[12],in[13],in[14],in[15]};
 //assign outp = {out[0],out[1],out[2],out[3],out[4],out[5],out[6],out[7],out[8],out[9],out[10],out[11],out[12],out[13],out[14],out[15]};
 
-aes_encrypt #(4) encrypt(.clk(clk),.rst_n(rst_n),.key(key),.load(load),.pt(inp),.ct(outp),.valid(flag),.k_sch(k_sch));
+aes_encrypt #(4) encrypt(.clk(clk),.rst_n(rst_n),.key(key),.load(load),.pt(inp),.ct(outp),.valid(flag));
 
 chattering_remover chat_rem(.clk(clk),.rst(rst_n),.key_in(btn),.key_out(btn_out));
 chattering_remover chat_rem2(.clk(clk),.rst(rst_n),.key_in(btn2),.key_out(btn2_out));

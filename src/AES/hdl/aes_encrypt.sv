@@ -17,8 +17,7 @@ module aes_encrypt
     input logic [127:0] pt,
 
     output logic [127:0] ct,
-    output logic valid,
-    output logic [127:0] k_sch [0:Nr]
+    output logic valid
 );
 
 aes_key_expand #(Nk) key_expand(.*);

@@ -10,8 +10,8 @@ module aes_key_expand
     parameter Nr=Nk+6
 ) (
     input logic [32*Nk-1:0] key,
-    output logic [127:0] k_sch [0:Nr]
 );
+logic [127:0] k_sch [0:Nr]
 /* verilator lint_off UNOPTFLAT */
 logic [31:0] temp [4*(Nr+1)]/*verilator public*/;
 /* verilator lint_on UNOPTFLAT */
