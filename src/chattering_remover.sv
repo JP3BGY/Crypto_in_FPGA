@@ -15,10 +15,10 @@ endmodule
 
 module chattering_remover(clk, rst, key_in, key_out);
         input clk, rst;
-        input [17:0] key_in;
-        output [17:0] key_out;
-        reg [17:0] key_out;
-		  wire clk_divided;
+        input  key_in;
+        output  key_out;
+        reg  key_out;
+        wire clk_divided;
 
         always @(posedge clk_divided) key_out <= key_in;
 

@@ -1,7 +1,11 @@
 .PHONY: sim_aes
-sim_aes: src/test/test_aes_encrypt.cpp src/AES/hdl/*
+sim_aes: src/test/test_aes_encrypt.cpp src/AES/hdl/* src/AES/include/*
 	verilator --trace --trace-structs --trace-params --trace-underscore --trace-depth 10 -cc -I./src/AES/include -y ./src/AES/hdl  src/AES/hdl/aes_encrypt.sv --exe src/test/test_aes_encrypt.cpp
 	cd obj_dir/ && make -f Vaes_encrypt.mk && ./Vaes_encrypt
+.PHONY: sim_top
+sim_top: src/test/test_aes.cpp src/AES/hdl/* src/AES/include/*
+	verilator --trace --trace-structs --trace-params --trace-underscore --trace-depth 10 -cc -I./src/AES/include -y ./src/AES/hdl -y ./src/seg_led/ -y ./src/  src/aes.sv --exe src/test/test_aes.cpp
+	cd obj_dir/ && make -f Vaes.mk && ./Vaes
 .PHONY: sim_uart_read
 sim_uart_read: src/test/test_read_uart.cpp src/uart/read_uart.sv
 	verilator --trace --trace-structs --trace-params --trace-underscore --trace-depth 10 -cc -I./src/AES/include  src/uart/read_uart.sv --exe src/test/test_read_uart.cpp

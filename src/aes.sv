@@ -23,6 +23,8 @@ wire [127:0] outp;
 wire [7:0] out[15:0];
 wire [4*8*4-1:0] key;
 wire btn_out;
+wire btn2_out;
+wire btn3_out;
 
 assign key = 128'hfefd00d583ef87e9b7e6ab3a655f68db;
 assign inp = {in[0],in[1],in[2],in[3],in[4],in[5],in[6],in[7],in[8],in[9],in[10],in[11],in[12],in[13],in[14],in[15]};
@@ -43,16 +45,16 @@ endgenerate
 
 generate
     for (i = 0; i < 8; i++) begin :segment_led
-        seg_led(.data(segment_led_buf[i*4+:4]),.seg(seg_led[7-i]));
+        seg_led segment(.data(segment_led_buf[i*4+:4]),.seg(seg_led[7-i]));
     end
 endgenerate
 
 initial
 begin
-	led <= in[0];
-	pos1 <= 0;
-	pos2 <= 0;
-	load <= 0;
+	led = in[0];
+	pos1 = 0;
+	pos2 = 0;
+	load = 0;
 end
 assign segment_led_buf = outp [pos1*32+31-:32];
 always @(negedge btn_out or negedge btn2_out or negedge btn3_out or negedge rst_n)
@@ -70,8 +72,8 @@ begin
     end
     else if(!btn_out)
     begin
-        pos2 = pos2 + 1;
-        if(pos2 == 11)pos2 = 0;
+        if(pos2 == 10)pos2 <= 0;
+        else pos2 <= pos2 + 1;
     end
     else if(!btn3_out)
     begin

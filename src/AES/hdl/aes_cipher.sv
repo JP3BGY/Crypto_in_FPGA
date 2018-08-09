@@ -22,9 +22,9 @@ module aes_cipher
     output logic valid
 );
 
-logic [127:0] state [0:1];
+logic [127:0] state [0:1] /*verilator public*/;
 
-logic [0:3] valids;
+logic [3:0] valids /*verilator public*/;
 
 always_comb ct = state[0];
 always_comb valid = (valids==Nr+1);
@@ -141,10 +141,10 @@ always @(posedge clk or negedge rst_n) begin
                 state[0] <= AddRoundKey(pt,k_sch[0]);
             end
             else if(valids != Nr)begin
-                state[valids[0]^1]<=AddRoundKey(MixColumns(ShiftRows(SubBytes(state[valids[0]]))),k_sch[valids]);
+                state[valids[0]]<=AddRoundKey(MixColumns(ShiftRows(SubBytes(state[valids[0]^1]))),k_sch[valids]);
             end
             else begin
-                state[valids[0]^1]<=AddRoundKey(ShiftRows(SubBytes(state[valids[0]])),k_sch[valids]);
+                state[valids[0]]<=AddRoundKey(ShiftRows(SubBytes(state[valids[0]^1])),k_sch[valids]);
             end
             valids <= valids + 1;
         end

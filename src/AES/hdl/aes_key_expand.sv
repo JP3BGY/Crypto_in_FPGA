@@ -4,6 +4,7 @@
 // All rights reserved
 
 `include "flops.svh"
+`include "aes.svh"
 module aes_key_expand
 #(
     parameter Nk=4,
