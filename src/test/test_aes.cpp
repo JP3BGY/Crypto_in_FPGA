@@ -6,9 +6,6 @@
 
 unsigned int main_time=0;
 
-double sc_time_stamp(){
-  return main_time;
-}
 unsigned int aes_key[4] = {0x655f68db,0xb7e6ab3a,0x83ef87e9,0xfefd00d5,};
 int main(int argc, char const* argv[])
 {
@@ -17,7 +14,7 @@ int main(int argc, char const* argv[])
 
   Verilated::traceEverOn(true);
   VerilatedVcdC* tfp = new VerilatedVcdC();
-  top->trace(tfp,1000);
+  top->trace(tfp,10000000);
   tfp->open("sim_top.vcd");
 
   top->rst_n = 0;
@@ -31,12 +28,12 @@ int main(int argc, char const* argv[])
     if(main_time > 10)top->rst_n = 1;
     if(main_time % 5 == 0)
       top->clk = !top->clk;
-    if(main_time > 20 )
+    if(main_time > 2000000 )
       top->btn2 = 0;
     top->eval();
     tfp->dump(main_time);
-    if(main_time > 1000)break;
     main_time++;
+    if(main_time == 10000000)break;
   }
   tfp->close();
   top->final();

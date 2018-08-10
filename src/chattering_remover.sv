@@ -3,7 +3,7 @@ module divider(clk, rst, clkout);
         input clk, rst;
         output clkout;
 
-        reg [15:0] counter;
+        reg [15:0] counter /*verilator public*/;
 
         always @(posedge clk or negedge rst) begin
                 if(!rst) counter <= 16'b0;

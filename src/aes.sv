@@ -1,4 +1,3 @@
-`include "flops.svh"
 `include "aes.svh"
 
 module aes
@@ -49,15 +48,8 @@ generate
     end
 endgenerate
 
-initial
-begin
-	led = in[0];
-	pos1 = 0;
-	pos2 = 0;
-	load = 0;
-end
 assign segment_led_buf = outp [pos1*32+31-:32];
-always @(negedge btn_out or negedge btn2_out or negedge btn3_out or negedge rst_n)
+always @(posedge clk or negedge rst_n)
 begin
     if(!rst_n)
     begin
