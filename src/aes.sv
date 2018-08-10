@@ -60,7 +60,7 @@ begin
     end
     else if(!btn2_out)
     begin
-        load <= load^1;
+        load <= 1;
     end
     else if(!btn_out)
     begin
