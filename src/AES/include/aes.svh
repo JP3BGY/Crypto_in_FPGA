@@ -8,7 +8,7 @@
 `ifndef AES_SV
 `define AES_SV
 
-const bit [7:0] SBOX [256] = '{
+parameter bit [7:0] SBOX [256] = '{
     8'h63, 8'h7c, 8'h77, 8'h7b, 8'hf2, 8'h6b, 8'h6f, 8'hc5, 8'h30, 8'h01, 8'h67, 8'h2b, 8'hfe, 8'hd7, 8'hab, 8'h76,
     8'hca, 8'h82, 8'hc9, 8'h7d, 8'hfa, 8'h59, 8'h47, 8'hf0, 8'had, 8'hd4, 8'ha2, 8'haf, 8'h9c, 8'ha4, 8'h72, 8'hc0,
     8'hb7, 8'hfd, 8'h93, 8'h26, 8'h36, 8'h3f, 8'hf7, 8'hcc, 8'h34, 8'ha5, 8'he5, 8'hf1, 8'h71, 8'hd8, 8'h31, 8'h15,
@@ -27,7 +27,7 @@ const bit [7:0] SBOX [256] = '{
     8'h8c, 8'ha1, 8'h89, 8'h0d, 8'hbf, 8'he6, 8'h42, 8'h68, 8'h41, 8'h99, 8'h2d, 8'h0f, 8'hb0, 8'h54, 8'hbb, 8'h16
 };
 
-const bit [7:0] ISBOX [256] = '{
+parameter bit [7:0] ISBOX [256] = '{
     8'h52, 8'h09, 8'h6a, 8'hd5, 8'h30, 8'h36, 8'ha5, 8'h38, 8'hbf, 8'h40, 8'ha3, 8'h9e, 8'h81, 8'hf3, 8'hd7, 8'hfb,
     8'h7c, 8'he3, 8'h39, 8'h82, 8'h9b, 8'h2f, 8'hff, 8'h87, 8'h34, 8'h8e, 8'h43, 8'h44, 8'hc4, 8'hde, 8'he9, 8'hcb,
     8'h54, 8'h7b, 8'h94, 8'h32, 8'ha6, 8'hc2, 8'h23, 8'h3d, 8'hee, 8'h4c, 8'h95, 8'h0b, 8'h42, 8'hfa, 8'hc3, 8'h4e,
@@ -46,14 +46,14 @@ const bit [7:0] ISBOX [256] = '{
     8'h17, 8'h2b, 8'h04, 8'h7e, 8'hba, 8'h77, 8'hd6, 8'h26, 8'he1, 8'h69, 8'h14, 8'h63, 8'h55, 8'h21, 8'h0c, 8'h7d
 };
 
-const bit [7:0] RCON [16] = '{
+parameter bit [7:0] RCON [16] = '{
     8'h8d, 8'h01, 8'h02, 8'h04, 8'h08, 8'h10, 8'h20, 8'h40,
     8'h80, 8'h1b, 8'h36, 8'h6c, 8'hd8, 8'hab, 8'h4d, 8'h9a
 };
 
-const bit [15:0] MA [4] = '{16'h2311, 16'h1231, 16'h1123, 16'h3112};
+parameter bit [15:0] MA [4] = '{16'h2311, 16'h1231, 16'h1123, 16'h3112};
 
-const bit [15:0] IMA [4] = '{16'hebd9, 16'h9ebd, 16'hd9eb, 16'hbd9e};
+parameter bit [15:0] IMA [4] = '{16'hebd9, 16'h9ebd, 16'hd9eb, 16'hbd9e};
 
 //function automatic logic [31:0]
 //SubWord(logic [3:0] [7:0] w);
