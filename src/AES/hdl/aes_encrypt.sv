@@ -20,6 +20,7 @@ module aes_encrypt
     output logic valid
 );
 wire [4:0] key_avail;
+wire [127:0] k_sch;
 aes_key_expand #(Nk) key_expand(.*);
 aes_cipher #(Nk) cipher(.*);
 

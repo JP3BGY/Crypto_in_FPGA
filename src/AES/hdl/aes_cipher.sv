@@ -13,8 +13,8 @@ module aes_cipher
     input logic clk,
     input logic rst_n,
 
-    input logic [127:0] k_sch ,
-    input key_avail,
+    input logic [127:0] k_sch,
+    input [4:0] key_avail,
 
     input logic load,
     input logic [127:0] pt,
@@ -25,10 +25,7 @@ module aes_cipher
 
 logic [127:0] state [0:1] /*verilator public*/;
 
-logic [3:0] valids /*verilator public*/;
-
-logic [3:0] key_valids  /*verilator public*/;
-
+logic [4:0] valids /*verilator public*/;
 
 always_comb ct = state[0];
 always_comb valid = (valids==Nr+1);
@@ -118,22 +115,14 @@ endfunction
 
 always @(posedge clk or negedge rst_n) begin
     if(!rst_n)begin
-        valids = 0;
-        key_valids = 0;
-        state[0] = 0;
-        state[1] = 0;
-        k_sch[0] = 0;
-        k_sch[1] = 0;
-        key_pos = 0;
+        valids <= 0;
+        state[0] <= 0;
+        state[1] <= 0;
     end
     else if(!load)begin
-        valids = 0;
-        key_valids = 0;
-        state[0] = 0;
-        state[1] = 0;
-        k_sch[0] = 0;
-        k_sch[1] = 0;
-        key_pos = 0;
+        valids <= 0;
+        state[0] <= 0;
+        state[1] <= 0;
     end
     else if(load)begin
         if(valids != Nr+1 && valids == key_avail)begin

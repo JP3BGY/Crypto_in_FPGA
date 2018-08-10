@@ -9,17 +9,21 @@ module aes_key_expand
     parameter Nk=4,
     parameter Nr=Nk+6
 ) (
+    input logic clk,
+    input logic rst_n,
+
     input logic [32*Nk-1:0] key,
     input logic load,
 
-    output logic [127:0] k_sch ,
+    output [127:0] k_sch ,
     output logic [4:0] key_avail
 );
-logic [32*Nk-1:0] state_keys [0:1];
-logic [1:0] key_pos;
+logic [32*Nk-1:0] state_keys [0:1]/*verilator public*/;
+logic [(Nk+2)/4-1:0] key_pos/*verilator public*/;
+logic [3:0] key_round;
 wire [128*(Nk/2)-1:0] key_all;
 wire [127:0] k_schs [0:Nk/2-1];
-
+assign k_sch = k_schs[key_pos];
 assign key_all = {state_keys[1],state_keys[0]};
 genvar i;
 generate
@@ -35,7 +39,7 @@ function logic [31:0]
 SubWord(logic [3:0] [7:0] w);
     return {SBOX[w[3]], SBOX[w[2]], SBOX[w[1]], SBOX[w[0]]};
 endfunction
-function logic [32*Nk-1:0] key_expansion(logic [32*Nk-1:0] key);
+function logic [32*Nk-1:0] key_expansion(logic [32*Nk-1:0] key,logic [3:0] round);
     reg [31:0] temp [0:Nk*2-1];
     begin
         for(int i = 0;i < Nk;i++)
@@ -44,14 +48,14 @@ function logic [32*Nk-1:0] key_expansion(logic [32*Nk-1:0] key);
             if (i == Nk)
                 temp[i] = temp[i-Nk]
                         ^ SubWord(RotWord(temp[i-1]))
-                        ^ {24'h0, RCON[i/Nk]};
+                        ^ {24'h0, RCON[round]};
             else if (Nk > 6 && (i % Nk == 4))
                 temp[i] = temp[i-Nk] ^ SubWord(temp[i-1]);
             else
                 temp[i] = temp[i-Nk] ^ temp[i-1];
         end
         for(int i = 0;i < Nk;i++)
-            key_expansion [i*32+:32] = temp[i];
+            key_expansion [i*32+:32] = temp[i+Nk];
     end
 endfunction
 always @(posedge clk or negedge rst_n)begin
@@ -60,36 +64,42 @@ always @(posedge clk or negedge rst_n)begin
         key_pos <= 0;
         state_keys[0] <= 0;
         state_keys[1] <= 0;
+        key_round <= 0;
     end
     else if(!load)begin
         key_avail <= 16;
         key_pos <= 0;
         state_keys[0] <= 0;
         state_keys[1] <= 0;
+        key_round <= 0;
     end
     else if(load)begin
         if(key_avail != 15)begin
             if(key_avail == 16)begin
                 state_keys[0] <= key;
-                state_keys[1] <= key_expansion(key);
+                state_keys[1] <= key_expansion(key,key_round+1);
                 key_pos <= 0;
                 key_avail <= 0;
+                key_round <= 1;
             end
             else begin
-                if(key_pos == 2)begin
-                    state_keys[0] <= key_expansion(state_keys[1]);
-                    key_pos <= 3;
+                /* verilator lint_off WIDTH */
+                if(key_pos == (Nk/4-1))begin
+                    state_keys[0] <= key_expansion(state_keys[1],key_round + 1);
+                    key_round <= key_round + 1;
+                    key_pos <= key_pos + 1;
                 end
-                else if(key_pos == 5)begin
-                    state_keys[1] <= key_expansion(state_keys[0]);
+                else if(key_pos == (Nk/2-1))begin
+                    state_keys[1] <= key_expansion(state_keys[0],key_round + 1);
+                    key_round <= key_round + 1;
                     key_pos <= 0;
                 end
+                /* verilator lint_on WIDTH */
                 else begin
                     key_pos <= key_pos + 1;
                 end
                 key_avail <= key_avail + 1;
             end
-            k_sch <= k_schs[key_pos];
         end
     end
 end
