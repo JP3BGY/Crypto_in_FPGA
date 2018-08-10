@@ -15,6 +15,7 @@ module aes
 
 reg [1:0] pos1;
 reg [3:0] pos2;
+reg [2:0] btn_stop;
 wire [31:0] segment_led_buf;
 wire [7:0] in[15:0];
 wire [127:0] inp;
@@ -62,14 +63,17 @@ begin
     begin
         load <= 1;
     end
-    else if(!btn_out)
+    else if(!btn_out && !btn_stop[0])
     begin
-        if(pos2 == 10)pos2 <= 0;
-        else pos2 <= pos2 + 1;
+        pos1 <= pos1 - 1;
+        btn_stop[0] <= 1;
+    end
+    else if(btn_out)
+    begin
+        btn_stop[0] <= 0;
     end
     else if(!btn3_out)
     begin
-        pos1 <= pos1 - 1;
     end
 end
 endmodule
