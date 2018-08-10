@@ -27,9 +27,9 @@ assign k_sch = k_schs[key_pos];
 assign key_all = {state_keys[1],state_keys[0]};
 genvar i;
 generate
-    for(i=0;i<Nk/2;i++)begin
-        assign k_schs[i] = key_all[128*i+:128];
-    end
+for(i=0;i<Nk/2;i++)begin :key_schedule
+    assign k_schs[i] = key_all[128*i+:128];
+end
 endgenerate
 function logic [31:0]
 RotWord(logic [3:0] [7:0] w);
