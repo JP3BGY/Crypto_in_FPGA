@@ -20,9 +20,8 @@ module aes_decrypt
     output logic [127:0] pt,
     output logic valid
 );
-
-logic [127:0] k_sch [0:Nr];
-
+wire [4:0] key_avail;
+wire [127:0] k_sch;
 aes_key_expand #(Nk) key_expand(.*);
 aes_inv_cipher #(Nk) inv_cipher(.*);
 
